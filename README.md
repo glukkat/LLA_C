@@ -1,2 +1,1 @@
-# LLA_C
-Learning repository for the C course of LowLevelAcademy
+# This is a readme file
