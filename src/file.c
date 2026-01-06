@@ -10,13 +10,15 @@
 
 
 int create_db_file(char *filename) {
+
 	int fd = open(filename, O_RDONLY);
+
 	if (fd != -1) {
 		printf("FATAL ERROR: the file already exists.\n");
 		return STATUS_ERROR;
 	}
 
-	int fd = open(filename, O_RDWR | O_CREAT, 0644);
+	fd = open(filename, O_RDWR | O_CREAT, 0644);
 	if (fd == -1) {
 		perror("open");
 		return STATUS_ERROR;
@@ -26,7 +28,9 @@ int create_db_file(char *filename) {
 }
 
 int open_db_file(char *filename) {
-	fd = open(filename, O_RDWR);
+
+	int fd = open(filename, O_RDWR);
+	
 	if (fd == -1) {
 		perror("open");
 		return STATUS_ERROR;
