@@ -31,10 +31,10 @@ int output_file(int fd, struct dbheader_t *dbhdr/*, struct employee_t *employees
 		return STATUS_ERROR;
 	}
 
-	header->magic = htonl(header->magic);
-	header->version = htons(header->version);
-	header->count = htons(header->count);
-	header->filesize = htonl(header->filesize);
+	dbhdr->magic = htonl(dbhdr->magic);
+	dbhdr->version = htons(dbhdr->version);
+	dbhdr->count = htons(dbhdr->count);
+	dbhdr->filesize = htonl(dbhdr->filesize);
 
 	lseek(fd, 0, SEEK_SET);
 
@@ -104,5 +104,3 @@ int create_db_header(int fd, struct dbheader_t **headerOut) {
 
 	return STATUS_SUCCESS;
 }
-
-
