@@ -40,7 +40,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 	int index = dbhdr->count;
 
 	struct employee_t*e = *employees;
-	e = realloc(e, sizeof(struct employee_t)*index+1);
+	e = realloc(e, sizeof(struct employee_t)*(index+1));
 	if (e == NULL) {
 		printf("Realloc failed to assign new memory for the employee addition.\n");
 		return STATUS_ERROR;
