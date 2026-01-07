@@ -13,6 +13,10 @@
 #define VERSION 0x1
 
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
+
+	if (dbhdr == NULL) return;
+	if (employees == NULL) return;
+
 	printf("Employees List:\n\n");
 	for (int i = 0; i < dbhdr->count; i++) {
 		printf("Employee #%d\n", i);
@@ -21,6 +25,7 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 		printf("\tHours: %d\n\n", employees[i].hours);
 	}
 	printf("---\n");
+	return;
 }
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
