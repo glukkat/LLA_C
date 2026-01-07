@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <getopt.h>
@@ -11,10 +12,10 @@ void print_usage(char *argv0) {
 	static bool printed = false;
 	if (!printed) {
 		printf("Standard usage:\n");
-		printf("%s -n -f <database file>", argv0);
+		printf("%s -n -f <database file> -a <new employee>", argv0);
 		printf("\t -n: create new file");
-		printf("\t -f: <required> path to database file");/*
-		printf("");
+		printf("\t -f: <required> path to database file");
+		printf("\t -a: add employee: comma-separated, no trailing space (name,address,hours)");/*
 		printf("");
 		printf("");*/
 
@@ -22,16 +23,41 @@ void print_usage(char *argv0) {
 	}
 }
 
+void free_memory() {
+
+	if (header != NULL) {
+		free(header);
+		header = NULL;
+	}
+
+	if (employees != NULL) {
+		free(employees);
+		employees = NULL;
+	}
+
+	if (filepath != NULL) {
+		free(filepath);
+		filepath = NULL;
+	}
+
+	if (addarg != NULL) {
+		free(addarg);
+		addarg = NULL;
+	}
+}
+
 int main(int argc, char *argv[]) {
 
 	int dbfd = -1;
 	struct dbheader_t*header = NULL;
+	struct employee_t*employees = NULL;
 	
 	int c = {0};
 	bool newfile = false;
 	char*filepath = NULL;
+	char*addarg = NULL;
 
-	while ((c = getopt(argc, argv, "nf:")) != -1) {
+	while ((c = getopt(argc, argv, "nf:a:")) != -1) {
 		switch (c) {
 		case 'n':
 			newfile = true;
@@ -39,6 +65,8 @@ int main(int argc, char *argv[]) {
 		case 'f':
 			filepath = optarg;
 			break;
+		case 'a':
+			addarg = optarg;
 		case '?':
 			printf("Unknown argument");
 			print_usage(argv[0]);
@@ -78,7 +106,17 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	if (addarg) {
+		if(add_employee(header, &employees, addarg) == STATUS_ERROR) {
+			printf("Error: failed to add employee.\n");
+		}
+	}
+
 	//INSERT CODE OVER THIS LINE
 
-	output_file(dbfd, header, NULL);
+	output_file(dbfd, header, employees);
+
+	close(dbfd);
+
+	free_memory();
 }
