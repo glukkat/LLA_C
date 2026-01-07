@@ -12,11 +12,11 @@ void print_usage(char *argv0) {
 	static bool printed = false;
 	if (!printed) {
 		printf("Standard usage:\n");
-		printf("%s -n -f <database file> -a <new employee>", argv0);
+		printf("%s -n -f <database file> -a <new employee> -l", argv0);
 		printf("\t -n: create new file");
 		printf("\t -f: <required> path to database file");
-		printf("\t -a: add employee: comma-separated, no trailing space (name,address,hours)");/*
-		printf("");
+		printf("\t -a: add employee: comma-separated, no trailing space (name,address,hours)");
+		printf("\t -l: list employees");/*
 		printf("");*/
 
 		printed = true;
@@ -56,6 +56,7 @@ int main(int argc, char *argv[]) {
 	bool newfile = false;
 	char*filepath = NULL;
 	char*addarg = NULL;
+	bool list = false;
 
 	while ((c = getopt(argc, argv, "nf:a:")) != -1) {
 		switch (c) {
@@ -67,9 +68,14 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'a':
 			addarg = optarg;
+			break;
+		case 'l':
+			list = true;
+			break;
 		case '?':
 			printf("Unknown argument");
 			print_usage(argv[0]);
+			break;
 		default:
 			printf("FATAL ERROR: Unhandled character exception in getopt loop.\nThe program will now quit.\n");
 			return -1;
@@ -111,6 +117,8 @@ int main(int argc, char *argv[]) {
 			printf("Error: failed to add employee.\n");
 		}
 	}
+
+	if (list) list_employees(header, employees);
 
 	//INSERT CODE OVER THIS LINE
 
